@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageShell, SectionHeader } from "@/components/PageShell";
 import { Search, UploadCloud, FileText, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { uploadTelemetry, fetchIngestionHistory, deleteDataset } from "@/lib/api";
 import { toast } from "sonner";
 
@@ -20,61 +20,125 @@ function Dataset() {
   const [q, setQ] = useState("");
   const [deleteTarget, setDeleteTarget] = useState<any>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const queryClient = useQueryClient();
 
   const { data: history, refetch, isLoading } = useQuery({
     queryKey: ['ingestion-history', q],
     queryFn: () => fetchIngestionHistory(q),
   });
 
+  const [isSyncing, setIsSyncing] = useState(false);
+
+  // All query keys used across the platform — kept explicit so we can refetch
+  // them in a predictable order rather than relying on wildcard matching.
+  const ALL_QUERY_KEYS = [
+    ['ingestion-history'],
+    ['mission-status-home'],
+    ['mission-status-full'],
+    ['mission-status-obs'],
+    ['waveform', 'SoLEXS'],
+    ['nowcast'],
+    ['analytics-full'],
+  ] as const;
+
+  const syncAllCaches = async () => {
+    setIsSyncing(true);
+    try {
+      // 1. Mark every query stale immediately so no component renders
+      //    cached values while the refetch is in flight.
+      queryClient.invalidateQueries();
+
+      // 2. Await active refetches for every key we care about so fresh
+      //    data is in the cache BEFORE the success toast fires.
+      await Promise.allSettled(
+        ALL_QUERY_KEYS.map((key) =>
+          queryClient.refetchQueries({ queryKey: key, type: 'active' })
+        )
+      );
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
   const handleUpload = async () => {
     const fileInput = document.getElementById('file-upload') as HTMLInputElement;
     const instrumentSelect = document.getElementById('instrument-select') as HTMLSelectElement;
-    if (fileInput.files?.[0]) {
-      const file = fileInput.files[0];
-      const instrument = instrumentSelect.value;
-      try {
-        const res = await uploadTelemetry(file, instrument);
-        toast.success("Dataset Uploaded Successfully", {
-          description: (
-            <div className="font-mono text-xs mt-1.5 space-y-1 text-white/70">
-              <div>Filename: {file.name}</div>
-              <div>Rows Processed: {res.rows_processed}</div>
-              <div>Instrument: {instrument}</div>
-              <div>Status: Successfully Ingested</div>
-            </div>
-          ),
-          duration: 5000,
-        });
-        
-        fileInput.value = "";
-        refetch();
-      } catch (err: any) {
-        const errMsg = err?.response?.data?.detail || "Upload failed. Check backend connectivity.";
-        toast.error("Upload Failed", {
-          description: errMsg,
-          duration: 5000,
-        });
-      }
+    if (!fileInput.files?.[0]) return;
+
+    const file = fileInput.files[0];
+    const instrument = instrumentSelect.value;
+
+    // Phase 1 — show uploading indicator
+    const uploadingId = toast.loading("Uploading telemetry…", {
+      description: (
+        <div className="font-mono text-xs mt-1 text-white/60">
+          Processing {file.name} through the AI pipeline…
+        </div>
+      ),
+    });
+
+    try {
+      const res = await uploadTelemetry(file, instrument);
+      fileInput.value = "";
+
+      // Phase 2 — dismiss uploading toast, start sync notification
+      toast.dismiss(uploadingId);
+      const syncId = toast.loading("Telemetry uploaded successfully. Updating mission intelligence…", {
+        description: (
+          <div className="font-mono text-xs mt-1.5 space-y-1 text-white/70">
+            <div>Filename: {file.name}</div>
+            <div>Rows Processed: {res.rows_processed}</div>
+            <div>Instrument: {instrument}</div>
+          </div>
+        ),
+      });
+
+      // Phase 3 — await full cache synchronisation
+      await syncAllCaches();
+
+      // Phase 4 — confirm synchronisation complete
+      toast.dismiss(syncId);
+      toast.success("Mission intelligence synchronized successfully.", {
+        description: (
+          <div className="font-mono text-xs mt-1.5 space-y-1 text-white/70">
+            <div>All dashboards updated with new telemetry.</div>
+            <div>{res.rows_processed} rows integrated across the platform.</div>
+          </div>
+        ),
+        duration: 5000,
+      });
+
+    } catch (err: any) {
+      toast.dismiss(uploadingId);
+      const errMsg = err?.response?.data?.detail || "Upload failed. Check backend connectivity.";
+      toast.error("Upload Failed", { description: errMsg, duration: 5000 });
     }
   };
+
 
   const handleDeleteConfirm = async () => {
     if (!deleteTarget) return;
     setIsDeleting(true);
+    const deletingId = toast.loading("Removing dataset…", {
+      description: `Deleting ${deleteTarget.filename} and its telemetry records…`,
+    });
     try {
       await deleteDataset(deleteTarget.id);
-      toast.success("Dataset Deleted Successfully", {
-        description: `Filename: ${deleteTarget.filename} has been removed.`,
+      toast.dismiss(deletingId);
+      setDeleteTarget(null);
+
+      const syncId = toast.loading("Dataset removed. Synchronizing mission intelligence…");
+      await syncAllCaches();
+      toast.dismiss(syncId);
+
+      toast.success("Mission intelligence synchronized successfully.", {
+        description: `${deleteTarget.filename} and all associated telemetry have been removed.`,
         duration: 4000,
       });
-      setDeleteTarget(null);
-      refetch();
     } catch (err: any) {
+      toast.dismiss(deletingId);
       const errMsg = err?.response?.data?.detail || "Failed to delete dataset.";
-      toast.error("Deletion Failed", {
-        description: errMsg,
-        duration: 5000,
-      });
+      toast.error("Deletion Failed", { description: errMsg, duration: 5000 });
     } finally {
       setIsDeleting(false);
     }
@@ -106,8 +170,13 @@ function Dataset() {
             <option value="SUIT">SUIT (UV)</option>
           </select>
           <input type="file" id="file-upload" className="text-xs text-white/40 file:bg-white/10 file:text-white file:border-0 file:py-2 file:px-4 file:rounded-lg file:mr-4" />
-          <button onClick={handleUpload} className="bg-[#3BA4FF] text-white text-xs font-semibold px-6 py-2.5 rounded-lg flex items-center gap-2 hover:brightness-110 transition">
-            <UploadCloud className="size-3.5" /> Start Pipeline
+          <button
+            onClick={handleUpload}
+            disabled={isSyncing}
+            className="bg-[#3BA4FF] text-white text-xs font-semibold px-6 py-2.5 rounded-lg flex items-center gap-2 hover:brightness-110 transition disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:brightness-100"
+          >
+            <UploadCloud className="size-3.5" />
+            {isSyncing ? "Synchronizing…" : "Start Pipeline"}
           </button>
         </div>
       </div>

@@ -21,7 +21,8 @@ function Explain() {
     queryFn: () => getNowcast(),
   });
 
-  const predictionId = nowcast?.id || "latest";
+  // Backend returns `prediction_id`; `id` is kept for backwards compat
+  const predictionId = nowcast?.prediction_id || nowcast?.id || "latest";
 
   const { data: explanation, isLoading } = useQuery({
     queryKey: ['explanation', predictionId],

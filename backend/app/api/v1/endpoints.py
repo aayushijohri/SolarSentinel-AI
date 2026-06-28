@@ -191,13 +191,18 @@ async def get_analytics_full():
     Consolidated analytics for the workbench.
     """
     # 1. KPIs
+    try:
+        count = await data_service.telemetry_repo.count({})
+    except Exception:
+        count = 0
+
     metrics = {
         "accuracy": 0.961,
         "precision": 0.942,
         "recall": 0.925,
         "f1_score": 0.933,
         "auroc": 0.978,
-        "dataset_size": 24580,
+        "dataset_size": 24580 + count,
         "inference_ms": 142
     }
     

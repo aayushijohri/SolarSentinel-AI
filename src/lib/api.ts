@@ -69,7 +69,9 @@ export interface PredictionResult {
     vsw_kms: number;
     dst_nt: number;
   };
-  id?: string;
+  /** Backend field name is prediction_id */
+  prediction_id?: string;
+  id?: string; // alias kept for backwards compat
 }
 
 export interface AnalyticsMetrics {
