@@ -1,5 +1,5 @@
 from fastapi import APIRouter, UploadFile, File, Query, HTTPException
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from backend.app.schemas.api_v1 import TelemetryResponse, TelemetryUploadResponse, PredictionResponse
 from backend.app.services.solar import DataService, ForecastingService
 import random
@@ -162,12 +162,26 @@ async def get_telemetry_waveform(instrument: str = "SoLEXS", limit: int = 72):
     }
 
 @router.get("/telemetry/history", tags=["Telemetry"])
-async def get_ingestion_history(limit: int = 50):
-    return [
-        {"id": "ING-10022", "ts": "2026-06-25 10:00:00", "instrument": "SoLEXS", "filename": "solexs_l1_20260625.csv", "status": "COMPLETED"},
-        {"id": "ING-10021", "ts": "2026-06-25 09:30:00", "instrument": "HEL1OS", "filename": "hel1os_l1_20260625.csv", "status": "COMPLETED"},
-        {"id": "ING-10020", "ts": "2026-06-25 09:00:00", "instrument": "SoLEXS", "filename": "solexs_l1_20260624_v2.csv", "status": "COMPLETED"},
-    ]
+async def get_ingestion_history(q: Optional[str] = Query(None, description="Search query")):
+    return await data_service.list_datasets(q=q)
+
+@router.get("/datasets", tags=["Telemetry"])
+async def get_datasets(q: Optional[str] = Query(None, description="Search query")):
+    return await data_service.list_datasets(q=q)
+
+@router.get("/datasets/{id}", tags=["Telemetry"])
+async def get_dataset(id: str):
+    dataset = await data_service.get_dataset(id)
+    if not dataset:
+        raise HTTPException(status_code=404, detail="Dataset not found")
+    return dataset
+
+@router.delete("/datasets/{id}", tags=["Telemetry"])
+async def delete_dataset(id: str):
+    success = await data_service.delete_dataset(id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Dataset not found or deletion failed")
+    return {"message": "Dataset deleted successfully", "id": id}
 
 # --- Analytics Endpoints ---
 

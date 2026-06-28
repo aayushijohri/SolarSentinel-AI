@@ -7,8 +7,8 @@ from typing import List, Optional
 from backend.ml.pipeline.ingestion.source_factory import SourceFactory
 from backend.ml.pipeline.ingestion.validator import ScientificValidator
 from backend.ml.pipeline.ingestion.models import IngestionReport, IngestionMetadata, IngestionStatus
-from backend.app.repositories.internal import TelemetryRepository
-from backend.app.schemas.base import Telemetry
+from backend.app.schemas.base import Telemetry, Dataset
+from backend.app.repositories.internal import TelemetryRepository, DatasetRepository
 from backend.configs.logging import logger
 
 class IngestionOrchestrator:
@@ -18,6 +18,7 @@ class IngestionOrchestrator:
     """
     def __init__(self):
         self.repository = TelemetryRepository()
+        self.dataset_repository = DatasetRepository()
         self.validator = ScientificValidator()
 
     async def ingest_file(self, file_path: str, instrument: str) -> IngestionReport:
@@ -29,6 +30,21 @@ class IngestionOrchestrator:
         total_rows = 0
         valid_rows = 0
         
+        dataset_id = None
+        try:
+            dataset_obj = Dataset(
+                filename=path.name,
+                instrument=instrument,
+                row_count=0,
+                valid_rows=0,
+                status="PROCESSING"
+            )
+            await self.dataset_repository.create(dataset_obj)
+            dataset_id = str(dataset_obj.id)
+        except Exception as db_init_err:
+            all_warnings.append(f"DB primary dataset entry skipped (degraded mode): {str(db_init_err)[:120]}")
+            logger.warning("ingestion.db_dataset_init_skip", error=str(db_init_err)[:120])
+
         try:
             loader = SourceFactory.get_loader(path, instrument)
             checksum = loader.calculate_checksum(path)
@@ -53,7 +69,8 @@ class IngestionOrchestrator:
                         instrument=instrument,
                         timestamp=row['timestamp'],
                         data=row.drop('timestamp').to_dict(),
-                        version="1.0"
+                        version="1.0",
+                        dataset_id=dataset_id
                     )
                     for _, row in clean_chunk.iterrows()
                 ]
@@ -94,11 +111,36 @@ class IngestionOrchestrator:
                 execution_time_ms=round(execution_time, 2)
             )
             
+            if dataset_id:
+                try:
+                    await self.dataset_repository.update(
+                        dataset_id,
+                        {
+                            "row_count": total_rows,
+                            "valid_rows": valid_rows,
+                            "status": "COMPLETED"
+                        }
+                    )
+                except Exception as db_up_err:
+                    all_warnings.append(f"DB dataset status completion update failed: {str(db_up_err)[:120]}")
+                    logger.warning("ingestion.db_dataset_update_failed", error=str(db_up_err)[:120])
+
             logger.info("ingestion.complete", instrument=instrument, rows=valid_rows, time_ms=execution_time)
             return report
 
         except Exception as e:
             logger.error("ingestion.failed", file=file_path, error=str(e))
+            if dataset_id:
+                try:
+                    await self.dataset_repository.update(
+                        dataset_id,
+                        {
+                            "status": "FAILED"
+                        }
+                    )
+                except Exception as db_err_failed:
+                    logger.warning("ingestion.db_dataset_failed_update_failed", error=str(db_err_failed)[:120])
+
             return IngestionReport(
                 status=IngestionStatus.FAILED,
                 metadata=None, # Incomplete

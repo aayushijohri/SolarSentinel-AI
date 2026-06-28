@@ -19,11 +19,20 @@ app = FastAPI(
 
 app.include_router(api_v1_router, prefix="/api")
 
-# CORS Configuration
-# In production, this should be restricted to the specific frontend domain
+import os
+
+# CORS — in production set ALLOWED_ORIGINS env var to your Vercel URL(s).
+# e.g. ALLOWED_ORIGINS=https://solarsentinel.vercel.app,https://www.yourdomain.com
+_raw_origins = os.getenv("ALLOWED_ORIGINS", "")
+ALLOWED_ORIGINS = (
+    [o.strip() for o in _raw_origins.split(",") if o.strip()]
+    if _raw_origins
+    else ["*"]  # wildcard only when env var is not set (local dev)
+)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -42,6 +51,8 @@ async def startup_event():
         await db_manager.connect()
         
         # Create Indexes
+        from backend.app.repositories.internal import DatasetRepository
+        await DatasetRepository().create_indexes()
         await TelemetryRepository().create_indexes()
         await PredictionRepository().create_indexes()
         await AlertRepository().create_indexes()

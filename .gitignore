@@ -30,3 +30,30 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.pyc
+
+# Backend env (never commit secrets)
+backend/.env
+
+# Sample data files (not for production)
+*.csv
+*.fits
+
+# ML artifacts / caches
+backend/artifacts/store/
+backend/cache/
+backend/logs/
+
+# Pytest
+.pytest_cache/
+

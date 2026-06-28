@@ -47,6 +47,14 @@ class Telemetry(DBModel):
     timestamp: datetime
     data: dict
     version: str = "1.0"
+    dataset_id: Optional[str] = None
+
+class Dataset(DBModel):
+    filename: str
+    instrument: str
+    row_count: int
+    valid_rows: int
+    status: str
 
 class Prediction(DBModel):
     prediction_time: datetime

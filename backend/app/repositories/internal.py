@@ -1,6 +1,14 @@
 from backend.app.repositories.base import BaseRepository
-from backend.app.schemas.base import Telemetry, Prediction, Alert
+from backend.app.schemas.base import Telemetry, Prediction, Alert, Dataset
 from backend.configs.logging import logger
+
+class DatasetRepository(BaseRepository[Dataset]):
+    def __init__(self, collection_name: str = "datasets"):
+        super().__init__(collection_name, Dataset)
+
+    async def create_indexes(self):
+        await self.collection.create_index([("created_at", -1)])
+        logger.info("db.indexes.created", collection=self.collection_name)
 
 class TelemetryRepository(BaseRepository[Telemetry]):
     def __init__(self, collection_name: str = "raw_telemetry"):

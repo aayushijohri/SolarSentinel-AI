@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000/api/v1';
+// In production set VITE_API_URL to your deployed backend URL (no trailing slash).
+// e.g. VITE_API_URL=https://solarsentinel-api.onrender.com/api/v1
+const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000/api/v1';
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -8,6 +10,7 @@ export const apiClient = axios.create({
     'Content-Type': 'application/json',
   },
 });
+
 
 export interface Alert {
   id: string;
@@ -114,8 +117,25 @@ export const getExplanation = async (predictionId: string) => {
   return response.data;
 };
 
-export const fetchIngestionHistory = async () => {
-  const response = await apiClient.get('/telemetry/history');
+export const fetchIngestionHistory = async (q?: string) => {
+  const url = q ? `/telemetry/history?q=${encodeURIComponent(q)}` : '/telemetry/history';
+  const response = await apiClient.get(url);
+  return response.data;
+};
+
+export const fetchDatasets = async (q?: string) => {
+  const url = q ? `/datasets?q=${encodeURIComponent(q)}` : '/datasets';
+  const response = await apiClient.get(url);
+  return response.data;
+};
+
+export const fetchDatasetById = async (id: string) => {
+  const response = await apiClient.get(`/datasets/${id}`);
+  return response.data;
+};
+
+export const deleteDataset = async (id: string) => {
+  const response = await apiClient.delete(`/datasets/${id}`);
   return response.data;
 };
 

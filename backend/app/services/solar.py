@@ -107,6 +107,77 @@ class DataService:
     def __init__(self):
         self.orchestrator = IngestionOrchestrator()
         self.telemetry_repo = TelemetryRepository()
+        from backend.app.repositories.internal import DatasetRepository
+        self.dataset_repo = DatasetRepository()
+
+    async def list_datasets(self, q: str = None):
+        try:
+            docs = await self.dataset_repo.find_many(
+                query={},
+                limit=100,
+                sort=[("created_at", -1)]
+            )
+        except Exception as e:
+            logger.error("datasets.fetch_failed", error=str(e))
+            docs = []
+            
+        results = []
+        for d in docs:
+            ts_str = d.created_at.strftime("%Y-%m-%d %H:%M:%S")
+            item = {
+                "id": str(d.id),
+                "ts": ts_str,
+                "instrument": d.instrument,
+                "filename": d.filename,
+                "status": d.status,
+                "row_count": d.row_count,
+                "valid_rows": d.valid_rows
+            }
+            if q:
+                q_lower = q.lower()
+                if (q_lower in item["filename"].lower() or 
+                    q_lower in item["instrument"].lower() or 
+                    q_lower in item["ts"].lower()):
+                    results.append(item)
+            else:
+                results.append(item)
+        return results
+
+    async def get_dataset(self, dataset_id: str):
+        from bson import ObjectId
+        try:
+            doc = await self.dataset_repo.find_one({"_id": ObjectId(dataset_id)})
+            if doc:
+                return {
+                    "id": str(doc.id),
+                    "ts": doc.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+                    "instrument": doc.instrument,
+                    "filename": doc.filename,
+                    "status": doc.status,
+                    "row_count": doc.row_count,
+                    "valid_rows": doc.valid_rows
+                }
+        except Exception as e:
+            logger.error("dataset.fetch_single_failed", dataset_id=dataset_id, error=str(e))
+        return None
+
+    async def delete_dataset(self, dataset_id: str):
+        from bson import ObjectId
+        try:
+            success = await self.dataset_repo.delete(dataset_id)
+            if success:
+                # Also delete associated telemetry records that originated from this dataset
+                delete_res = await self.telemetry_repo.collection.delete_many({
+                    "$or": [
+                        {"dataset_id": dataset_id},
+                        {"dataset_id": ObjectId(dataset_id) if ObjectId.is_valid(dataset_id) else None}
+                    ]
+                })
+                logger.info("dataset.deleted", dataset_id=dataset_id, telemetry_records_deleted=delete_res.deleted_count)
+                return True
+        except Exception as e:
+            logger.error("dataset.delete_failed", dataset_id=dataset_id, error=str(e))
+        return False
 
     async def process_upload(self, file: UploadFile, instrument: str):
         import tempfile, os

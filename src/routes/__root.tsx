@@ -49,11 +49,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
+import { Toaster } from "@/components/ui/sonner";
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
       <HeadContent />
+      <Toaster />
       <div className="relative min-h-screen overflow-x-hidden bg-[#05070D] text-foreground font-sans">
         <Starfield />
         <FloatingNav />
