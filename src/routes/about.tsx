@@ -90,7 +90,7 @@ function About() {
             <div className="font-display text-xl leading-snug">A hackathon prototype, engineered like flight software.</div>
             <p className="mt-3 text-sm text-white/60">Open source, reproducible and built to evolve into a production-grade public solar alert system.</p>
             <div className="mt-5 flex gap-2">
-              <a href="https://github.com/isro-hackathon/solar-sentinel" className="inline-flex items-center gap-2 rounded-lg bg-white/5 border border-white/15 px-4 py-2.5 text-xs font-semibold hover:bg-white/10 transition">
+              <a href="https://github.com/aayushijohri/SolarSentinel-AI" className="inline-flex items-center gap-2 rounded-lg bg-white/5 border border-white/15 px-4 py-2.5 text-xs font-semibold hover:bg-white/10 transition">
                 <Github className="size-3.5" /> 
                 GitHub Repository
               </a>
