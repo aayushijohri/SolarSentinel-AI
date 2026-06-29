@@ -1,0 +1,20 @@
+# Force the Python provider to override Node auto-detection due to root package.json
+providers = ["python"]
+
+# Setup environment variables
+[variables]
+PYTHONUNBUFFERED = "1"
+PYTHONPATH = "."
+NIXPACKS_PYTHON_VERSION = "3.11"
+
+# Install phase: create venv and install package dependencies from backend/requirements.txt
+[phases.install]
+cmds = [
+  "python -m venv /opt/venv",
+  "/opt/venv/bin/pip install --upgrade pip",
+  "/opt/venv/bin/pip install -r backend/requirements.txt"
+]
+
+# Start command: run uvicorn pointing to the backend module from the repository root
+[start]
+cmd = "/opt/venv/bin/uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT"

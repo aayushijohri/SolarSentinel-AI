@@ -17,6 +17,15 @@ class MongoDBManager:
         Initialize the MongoDB connection.
         """
         if cls.client is not None:
+            try:
+                loop = asyncio.get_event_loop()
+                if cls.client.get_io_loop() is not loop:
+                    cls.client.close()
+                    cls.client = None
+            except Exception:
+                cls.client = None
+
+        if cls.client is not None:
             return
 
         try:

@@ -57,6 +57,14 @@ async def startup_event():
         await PredictionRepository().create_indexes()
         await AlertRepository().create_indexes()
         logger.info("database.initialized")
+        
+        # Seed initial demo datasets if database is empty
+        try:
+            from backend.app.core.seeding import seed_demo_datasets
+            await seed_demo_datasets()
+        except Exception as seed_err:
+            logger.error("database.seeding_failed", error=str(seed_err))
+            
     except Exception as e:
         logger.warning("database.connection_failed", error=str(e), detail="Continuing in degraded mode without persistence.")
 
