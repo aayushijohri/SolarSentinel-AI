@@ -1,7 +1,5 @@
-# ☀️ SolarSentinel AI
-
 <div align="center">
-
+# ☀️ SolarSentinel AI
 ### **AI-Powered Solar Flare Forecasting & Nowcasting using Aditya-L1 SoLEXS + HEL1OS Data**
 
 *Built for **Bharatiya Antariksh Hackathon 2026***
@@ -15,7 +13,7 @@
 ## 📸 Platform Preview
 
 <p align="center">
-<img src="docs/screenshots/dashboard.png" width="100%">
+<img src="/solar.png" width="100%">
 </p>
 
 ---
