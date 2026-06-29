@@ -1,8 +1,11 @@
 import axios from 'axios';
 
-// In production set VITE_API_URL to your deployed backend URL (no trailing slash).
-// e.g. VITE_API_URL=https://solarsentinel-api.onrender.com/api/v1
-const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000/api/v1';
+// Set VITE_API_URL to your backend's root URL — no trailing slash, no /api/v1 suffix.
+// e.g. VITE_API_URL=https://solarsentinel-api.railway.app
+//
+// The /api/v1 prefix is always appended here so every endpoint resolves correctly.
+const _apiOrigin = (import.meta.env.VITE_API_URL ?? 'http://localhost:8000').replace(/\/+$/, '');
+const API_BASE_URL = `${_apiOrigin}/api/v1`;
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
