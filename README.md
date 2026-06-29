@@ -1,17 +1,27 @@
-# ☀️ SolarSentinel AI
 <div align="center">
 
-### **AI-Powered Solar Flare Forecasting & Nowcasting using Aditya-L1 SoLEXS + HEL1OS Data**
+# ☀️ SolarSentinel AI
 
-*Built for **Bharatiya Antariksh Hackathon 2026***
+### AI-Powered Solar Flare Forecasting & Nowcasting using **ISRO's Aditya-L1 SoLEXS & HEL1OS Data**
 
-🌐 **Live Demo:** https://solar-sentinel-ai1.vercel.app  
+> **Transforming scientific solar telemetry into explainable, AI-driven space weather intelligence.**
+
+![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi)
+![LightGBM](https://img.shields.io/badge/LightGBM-AI-orange?style=flat-square)
+![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-47A248?style=flat-square&logo=mongodb)
+![Railway](https://img.shields.io/badge/Backend-Railway-black?style=flat-square)
+![Vercel](https://img.shields.io/badge/Frontend-Vercel-black?style=flat-square&logo=vercel)
+
+### 🛰 Built for **Bharatiya Antariksh Hackathon 2026**
+
+🌐 **Live Demo:** https://solar-sentinel-ai1.vercel.app
 
 </div>
 
 ---
 
-## 📸 Platform Preview
+# 📸 Platform Preview
 
 <p align="center">
 <img src="/solar.png" width="100%">
@@ -21,111 +31,129 @@
 
 # 🚀 Overview
 
-SolarSentinel AI is an end-to-end **Space Weather Intelligence Platform** designed for **forecasting and nowcasting solar flares** using **combined SoLEXS (Soft X-Ray)** and **HEL1OS (Hard X-Ray)** observations from **ISRO's Aditya-L1 Mission**.
+SolarSentinel AI is an end-to-end **Space Weather Intelligence Platform** built to **forecast and nowcast solar flares** using **Aditya-L1 SoLEXS (Soft X-Ray)** and **HEL1OS (Hard X-Ray)** observations.
 
-The platform automates the complete pipeline—from telemetry ingestion and preprocessing to AI inference, explainability, visualization, and dataset management—through an interactive cloud-native dashboard.
+The platform automates the complete scientific workflow—from telemetry ingestion and preprocessing to AI inference, explainability, visualization, and Earth impact analysis—through an interactive cloud-native dashboard.
 
 ---
 
-# 🎯 Problem Statement Coverage
+# 💡 Why SolarSentinel AI?
 
-✔ Read SoLEXS & HEL1OS Level-1 datasets
+- Combines **SoLEXS + HEL1OS** observations for richer solar event analysis.
+- Bridges scientific telemetry with **Explainable AI** for transparent predictions.
+- Automates the complete telemetry-to-insight pipeline.
+- Synchronizes forecasting, analytics, observatory, explainability, and mission dashboards automatically after every dataset upload.
 
-✔ Process combined soft & hard X-Ray light curves
+---
 
-✔ Visualize scientific telemetry
+# 🎯 Solution Highlights
 
-✔ Automated flare detection (Nowcasting)
+✅ Read & process **Aditya-L1 SoLEXS & HEL1OS Level-1** datasets
 
-✔ Solar flare probability forecasting
+✅ Combined **Soft + Hard X-Ray** analysis
 
-✔ Explainable AI predictions
+✅ AI-powered Solar Flare **Nowcasting**
 
-✔ Automated flare database
+✅ Probabilistic Solar Flare **Forecasting**
 
-✔ Interactive monitoring dashboard
+✅ Explainable AI using **SHAP**
 
-✔ REST APIs for analytics & prediction
+✅ Automated telemetry preprocessing pipeline
+
+✅ Scientific telemetry visualization
+
+✅ Searchable telemetry & prediction database
+
+✅ Interactive analytics & mission dashboards
 
 ---
 
 # ✨ Core Features
 
-| Module | Features |
-|---------|----------|
-| 🛰 **Mission Dashboard** | Mission health, solar activity, prediction summary, operational status |
-| ☀️ **Solar Observatory** | SoLEXS & HEL1OS waveform visualization, historical telemetry, interactive charts |
-| 🤖 **AI Forecasting** | Time-series prediction, flare probability estimation, LightGBM inference |
-| ⚡ **Nowcasting** | Automated flare detection, event classification, combined X-Ray analysis |
-| 🧠 **Explainable AI** | SHAP explanations, feature importance, transparent model reasoning |
-| 🌍 **Earth Impact** | GPS disruption, communication impact, satellite risk estimation |
-| 📊 **Analytics** | Historical trends, telemetry insights, prediction statistics |
-| 📂 **Dataset Manager** | Upload CSV, preprocessing, metadata, history, delete datasets |
-| 🔌 **REST API** | Prediction, telemetry, analytics, datasets, health monitoring |
+| Module | Capabilities |
+|---------|--------------|
+| 🛰 **Mission Dashboard** | Mission health, solar activity index, flare probability, operational status |
+| ☀️ **Solar Observatory** | SoLEXS & HEL1OS visualization, waveform analysis, historical telemetry |
+| 🤖 **AI Forecasting** | LightGBM inference, flare probability estimation, confidence scoring |
+| ⚡ **Nowcasting** | Automated flare detection using combined telemetry signals |
+| 🧠 **Explainable AI** | SHAP feature importance & transparent prediction reasoning |
+| 🌍 **Earth Impact** | GPS disruption, satellite risk, communication impact estimation |
+| 📊 **Analytics** | Historical trends, prediction insights, telemetry statistics |
+| 📂 **Dataset Manager** | CSV upload, validation, preprocessing, metadata, history, deletion |
+| 🔌 **REST APIs** | Prediction, telemetry, analytics, datasets & health monitoring |
 
 ---
 
-# 📊 Dataset
+# 📊 Scientific Dataset
 
-| Source | Description |
+| Dataset | Description |
 |---------|-------------|
 | **SoLEXS (Level-1)** | Solar Low Energy X-Ray Spectrometer |
 | **HEL1OS (Level-1)** | High Energy L1 Orbiting X-Ray Spectrometer |
 | **Storage** | MongoDB Atlas |
-| **Supported Format** | CSV |
+| **Input Format** | CSV |
 
 ### Dataset Pipeline
 
-- Upload scientific telemetry
+- CSV Upload
 - Validation
-- Cleaning & preprocessing
-- Time synchronization
-- Feature engineering
-- Database storage
-- AI inference
-- Dashboard visualization
+- Cleaning
+- Time Synchronization
+- Feature Engineering
+- Database Storage
+- AI Inference
+- Dashboard Synchronization
 
 ---
 
-# 🤖 AI Pipeline
+# 🤖 AI Workflow
 
 ```text
-SoLEXS + HEL1OS
-        │
-        ▼
-Telemetry Upload
-        │
-        ▼
-Validation & Cleaning
-        │
-        ▼
-Feature Engineering
-        │
-        ▼
-LightGBM Model
-   │          │
-   ▼          ▼
-Nowcasting  Forecasting
-        │
-        ▼
- SHAP Explainability
-        │
-        ▼
- FastAPI APIs
-        │
-        ▼
- Interactive Dashboard
+          SoLEXS + HEL1OS
+                  │
+                  ▼
+         Scientific Telemetry
+                  │
+                  ▼
+          CSV Upload / API
+                  │
+                  ▼
+      Validation & Preprocessing
+                  │
+                  ▼
+ Physics + Temporal Feature Engineering
+                  │
+                  ▼
+         ML Inference Engine
+                  │
+        ┌─────────┴─────────┐
+        ▼                   ▼
+   Solar Nowcasting    Solar Forecasting
+                  │
+                  ▼
+        SHAP Explainability
+                  │
+                  ▼
+     FastAPI Backend Services
+                  │
+                  ▼
+ Mission Dashboard • Observatory
+ Analytics • Earth Impact
+ Dataset Manager
 ```
+
+> Every uploaded dataset automatically refreshes forecasting, explainability, analytics, observatory visualizations, and mission monitoring without manual intervention.
 
 ---
 
 # ⭐ Innovation Highlights
 
-- Combined **Soft + Hard X-Ray** analysis instead of a single data source
-- Automated end-to-end telemetry processing pipeline
-- Explainable AI using SHAP for scientific transparency
-- Cloud-native architecture with scalable REST APIs
-- Integrated visualization, analytics, forecasting and dataset management in one platform
+- Combined **Soft + Hard X-Ray** telemetry analysis.
+- End-to-end automated telemetry-to-insight pipeline.
+- Explainable AI with SHAP for scientific transparency.
+- Physics-aware & temporal feature engineering.
+- Automatic synchronization across all dashboards.
+- Cloud-native, modular, production-ready architecture.
 
 ---
 
@@ -136,6 +164,7 @@ Nowcasting  Forecasting
 | **Frontend** | React • TypeScript • Vite • Tailwind CSS |
 | **Backend** | FastAPI • Python • Uvicorn |
 | **Machine Learning** | LightGBM • SHAP • Scikit-learn |
+| **Visualization** | Recharts |
 | **Data Processing** | Pandas • NumPy • SciPy |
 | **Database** | MongoDB Atlas |
 | **Deployment** | Vercel • Railway |
@@ -149,9 +178,9 @@ SolarSentinel-AI
 │
 ├── src/
 │   ├── components/
-│   ├── pages/
 │   ├── hooks/
-│   └── lib/
+│   ├── lib/
+│   └── pages/
 │
 ├── backend/
 │   ├── api/
@@ -166,25 +195,10 @@ SolarSentinel-AI
 
 ---
 
-# 🌐 REST API
-
-| Endpoint | Purpose |
-|----------|---------|
-| `/api/v1/mission/status` | Mission monitoring |
-| `/api/v1/telemetry/upload` | Upload telemetry |
-| `/api/v1/telemetry/waveform` | Waveform visualization |
-| `/api/v1/telemetry/history` | Dataset history |
-| `/api/v1/datasets` | Dataset management |
-| `/api/v1/predict/nowcast` | Solar flare prediction |
-| `/api/v1/predict/explain/{id}` | SHAP explanation |
-| `/api/v1/analytics` | Analytics dashboard |
-| `/api/v1/health` | Health monitoring |
-
----
-
 # 🚀 Getting Started
 
 ```bash
+# Clone Repository
 git clone https://github.com/<your-username>/SolarSentinel-AI.git
 
 cd SolarSentinel-AI
@@ -196,6 +210,7 @@ npm run dev
 # Backend
 cd backend
 pip install -r requirements.txt
+
 uvicorn backend.app.main:app --reload
 ```
 
@@ -203,26 +218,28 @@ uvicorn backend.app.main:app --reload
 
 # ☁️ Deployment
 
-| Service | Platform |
-|---------|----------|
-| **Frontend** | Vercel |
-| **Backend** | Railway |
-| **Database** | MongoDB Atlas |
+| Component | Platform |
+|-----------|----------|
+| 🌐 Frontend | Vercel |
+| ⚡ Backend | Railway |
+| 🗄 Database | MongoDB Atlas |
+| 📖 API Documentation | `/docs` (Swagger UI) |
 
 ---
 
-# 🔮 Future Improvements
+# 🔮 Future Scope
 
-- Live Aditya-L1 telemetry ingestion
-- Transformer/LSTM forecasting
-- Real-time alert system
+- Live Aditya-L1 telemetry integration
+- Transformer/LSTM-based forecasting
+- Real-time solar event alerts
 - Advanced anomaly detection
 - Multi-mission support
+- Global space weather visualization
 
 ---
 
 # 👥 Team
 
-**Built for Bharatiya Antariksh Hackathon 2026**
+Developed for **Bharatiya Antariksh Hackathon 2026**.
 
-SolarSentinel AI demonstrates how AI, Explainable Machine Learning and scientific telemetry can be combined to build an intelligent, transparent and scalable space weather forecasting platform inspired by ISRO's Aditya-L1 mission.
+SolarSentinel AI demonstrates how **Artificial Intelligence**, **Explainable Machine Learning**, and **scientific telemetry** can be integrated into a unified platform for intelligent space weather monitoring, solar flare forecasting, and decision support inspired by **ISRO's Aditya-L1 Mission**.
