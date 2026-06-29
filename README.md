@@ -1,349 +1,231 @@
 # ☀️ SolarSentinel AI
-### AI-Powered Solar Flare Forecasting Platform Inspired by ISRO's Aditya-L1 Mission
 
-SolarSentinel AI is an end-to-end intelligent solar weather monitoring and forecasting platform designed to predict solar flare activity using telemetry-inspired scientific data, machine learning, and probabilistic forecasting.
+### AI-Powered Space Weather Intelligence Platform Inspired by ISRO's Aditya-L1 Mission
 
-Built for the **Bharatiya Antariksh Hackathon 2026**, the platform combines real-time telemetry visualization, AI-driven predictions, uncertainty estimation, and explainable AI into a modern mission-control dashboard.
+> **Transforming raw solar telemetry into explainable, real-time space weather intelligence using AI, Machine Learning, and interactive analytics.**
 
----
-
-## 🚀 Problem Statement
-
-Solar flares and coronal mass ejections (CMEs) can disrupt:
-
-- Satellite communications
-- GPS navigation
-- Aviation systems
-- Power grids
-- Deep-space missions
-
-Current monitoring systems largely focus on observation rather than intelligent forecasting.
-
-SolarSentinel AI provides an integrated platform capable of ingesting telemetry data, generating AI-powered forecasts, estimating uncertainty, and presenting mission-critical insights through an operator-friendly dashboard.
+🌐 **Live Demo:** https://solar-sentinel-ai1.vercel.app  
+⚡ **Backend API:** https://web-production-5ef63.up.railway.app
 
 ---
 
-# ✨ Features
+# 🚀 Overview
 
-## 📡 Real-Time Mission Control
-
-- Live spacecraft telemetry dashboard
-- Instrument health monitoring
-- Mission objectives
-- Alert management
-- Command logs
-- Timeline visualization
+SolarSentinel AI is an end-to-end **Space Weather Intelligence Platform** built for monitoring, forecasting, and understanding solar activity. Inspired by **ISRO's Aditya-L1 Mission**, the platform combines AI-powered forecasting, explainable machine learning, scientific data processing, and interactive visualization into a unified decision-support system.
 
 ---
+
+# 🎯 Problem Statement
+
+Current space weather monitoring systems often:
+
+- Require manual interpretation of telemetry
+- Provide limited predictive intelligence
+- Operate as black-box AI systems
+- Lack unified analytics and visualization
+
+SolarSentinel AI addresses these challenges through an explainable AI-driven pipeline capable of forecasting solar activity and estimating potential impacts on Earth.
+
+---
+
+# ✨ Key Features
+
+## 🛰️ Mission Dashboard
+
+- Live mission status monitoring
+- Solar activity indicators
+- Flare probability overview
+- Mission health metrics
 
 ## ☀️ Solar Observatory
 
-- Interactive solar observatory
-- Dynamic waveform monitor
-- Instrument status
-- Mission activity
-- Telemetry visualization
+- Interactive telemetry visualization
+- X-Ray Flux monitoring
+- Electron & Proton Flux analysis
+- Solar Wind & Plasma visualization
+- Magnetic Field trends
+- Historical waveform exploration
 
----
+## 🤖 AI-Powered Solar Flare Forecasting
 
-## 📈 AI Forecasting
-
-- Solar flare probability prediction
-- Flare classification (None / C / M / X)
+- LightGBM-based inference engine
+- Probability-based flare prediction
 - Confidence estimation
-- Physics-based fallback predictions
-- Forecast lead-time estimation
-
----
-
-## 🌍 Earth Impact Assessment
-
-Predicts potential effects on:
-
-- Satellite operations
-- Power infrastructure
-- Navigation systems
-- Communication networks
-- Aviation
-
----
+- Automated prediction pipeline
 
 ## 🧠 Explainable AI
 
-- Feature importance visualization
-- SHAP-inspired explanations
-- Model reasoning
-- Prediction confidence
-- Human-readable AI decisions
+- SHAP feature importance
+- Prediction transparency
+- Feature contribution analysis
+- Explainable model decisions
 
----
+## 🌍 Earth Impact Assessment
+
+- Satellite communication risk
+- GPS disruption estimation
+- Radio communication impact
+- Geomagnetic storm assessment
+
+## 📂 Dataset Management
+
+- CSV telemetry upload
+- Dataset history
+- Dataset deletion
+- Automatic pipeline synchronization
 
 ## 📊 Analytics Dashboard
 
-- Model performance metrics
-- Correlation analysis
-- Scatter plots
-- Probability curves
-- Training statistics
-- Scientific telemetry analytics
+- Historical telemetry trends
+- Prediction statistics
+- Mission analytics
+- Operational insights
+
+## ⚙️ REST API
+
+- Versioned FastAPI endpoints
+- Telemetry ingestion
+- AI inference
+- Analytics
+- System monitoring
 
 ---
 
-## 📂 Dataset Pipeline
+# 🏗️ System Architecture
 
-- CSV upload
-- Automatic ingestion
-- Validation
-- Feature engineering
-- MongoDB storage
-- Live backend integration
-
----
-
-# 🏗 System Architecture
-
-```
-Telemetry Data
-       │
-       ▼
-CSV Ingestion Pipeline
-       │
-       ▼
-Preprocessing
-       │
-       ▼
-Feature Engineering
-       │
-       ▼
-ML Prediction Engine
-       │
-       ▼
-Bayesian Confidence Layer
-       │
-       ▼
-Risk Assessment
-       │
-       ▼
-Mission Dashboard
+```text
+                  Aditya-L1 Inspired Telemetry
+                              │
+                              ▼
+                    CSV Upload / REST API
+                              │
+                              ▼
+               Validation & Data Preprocessing
+                              │
+                              ▼
+       Physics & Temporal Feature Engineering
+                              │
+                              ▼
+             AI Inference Engine (LightGBM)
+                    │                    │
+                    ▼                    ▼
+          Solar Flare Prediction    SHAP Explainability
+                    └──────────┬──────────┘
+                               ▼
+                      FastAPI Backend API
+                               │
+                               ▼
+ Mission Dashboard • Observatory • Analytics
+ Forecast • Earth Impact • Dataset Manager
 ```
 
 ---
 
-# 🧠 AI Pipeline
+# ⭐ Innovation Highlights
 
-- Data Ingestion
-- Preprocessing
-- Feature Engineering
-- Machine Learning Prediction
-- Bayesian Confidence Estimation
-- Explainability
-- Visualization
-
----
-
-# 🛠 Tech Stack
-
-## Frontend
-
-- React
-- TypeScript
-- Vite
-- Tailwind CSS
-- TanStack Router
-- Axios
-- Recharts
-- Canvas API
-- Framer Motion
+- End-to-end AI pipeline from telemetry ingestion to prediction
+- Physics-aware and temporal feature engineering
+- Explainable AI using SHAP for transparent predictions
+- Automatic synchronization across all dashboards after dataset upload
+- Production-ready cloud-native architecture
+- Modular backend supporting scalable ML workflows
 
 ---
 
-## Backend
+# 🛠️ Technology Stack
 
-- FastAPI
-- Python
-- MongoDB
-- Motor
-- Pydantic v2
-- APScheduler
-- Uvicorn
-
----
-
-## Machine Learning
-
-- Pandas
-- NumPy
-- Scikit-Learn
-- SciPy
-- LightGBM
-- XGBoost
-- SHAP
+| Layer | Technologies |
+|--------|--------------|
+| **Frontend** | React, TypeScript, Vite, Tailwind CSS |
+| **Backend** | FastAPI, Python, Uvicorn |
+| **AI / ML** | LightGBM, SHAP, Scikit-learn |
+| **Data Processing** | Pandas, NumPy, SciPy, Astropy |
+| **Database** | MongoDB Atlas |
+| **Deployment** | Vercel, Railway |
 
 ---
 
-## Database
+# 📂 Project Structure
 
-- MongoDB
-- MongoDB Compass
-
----
-
-# 📁 Project Structure
-
-```
-backend/
+```text
+SolarSentinel-AI
 │
-├── app/
-├── ml/
-├── physics/
-├── monitoring/
-├── scheduler/
-├── configs/
-└── data/
-
-src/
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── lib/
+│   └── hooks/
 │
-├── routes/
-├── components/
-├── hooks/
-└── lib/
+├── backend/
+│   ├── app/
+│   │   ├── api/
+│   │   ├── repositories/
+│   │   ├── services/
+│   │   └── schemas/
+│   │
+│   ├── ml/
+│   │   ├── preprocessing/
+│   │   ├── engineering/
+│   │   ├── ingestion/
+│   │   └── models/
+│   │
+│   └── configs/
+│
+├── docs/
+└── artifacts/
 ```
 
 ---
 
-# ⚙️ Installation
+# 🚀 Getting Started
 
-## Clone Repository
+### Clone Repository
 
 ```bash
-git clone https://github.com/aayushijohri/SolarSentinel-AI.git
+git clone https://github.com/<your-username>/SolarSentinel-AI.git
 cd SolarSentinel-AI
 ```
 
----
-
-## Backend
-
-```bash
-cd backend
-
-python -m venv venv
-
-# Windows
-venv\Scripts\activate
-
-pip install -r requirements.txt
-
-uvicorn backend.app.main:app --reload
-```
-
----
-
-## Frontend
+### Frontend
 
 ```bash
 npm install
 npm run dev
 ```
 
----
+### Backend
 
-## MongoDB
-
-Install MongoDB Community Server.
-
-Ensure MongoDB is running on:
-
-```
-mongodb://localhost:27017
-```
-
-Environment configuration:
-
-```
-MONGODB_URL=mongodb://localhost:27017
-DATABASE_NAME=solar_sentinel
+```bash
+cd backend
+pip install -r requirements.txt
+uvicorn backend.app.main:app --reload
 ```
 
 ---
 
-# 📂 Upload Dataset
+# ☁️ Deployment
 
-Navigate to:
-
-```
-Dataset
-```
-
-Upload a telemetry CSV.
-
-The ingestion pipeline will:
-
-- Validate
-- Parse
-- Engineer features
-- Store telemetry in MongoDB
-- Update dashboards
+| Component | Platform |
+|-----------|----------|
+| Frontend | Vercel |
+| Backend | Railway |
+| Database | MongoDB Atlas |
 
 ---
 
-# 🌟 Highlights
+# 🔮 Future Enhancements
 
-- Full-stack AI platform
-- Real-time telemetry visualization
-- Production-ready FastAPI backend
-- MongoDB integration
-- Live dashboard
-- Physics-based fallback engine
-- Explainable AI
-- Responsive modern UI
-- Modular architecture
+- Real-time Aditya-L1 telemetry integration
+- Transformer/LSTM-based forecasting
+- Automated space weather alerts
+- Multi-mission support
+- Advanced anomaly detection
+- Global space weather visualization
 
 ---
 
-# 📸 Screenshots
+# 👥 Team
 
-> Add screenshots here before submission.
+Developed for **Bharatiya Antariksh Hackathon 2026**.
 
-Example:
-
-- Home
-- Mission Control
-- Observatory
-- Analytics
-- Forecast
-- Earth Impact
-- Explainability
-- Dataset Upload
-
----
-
-# 🔮 Future Work
-
-- Integration with live Aditya-L1 telemetry
-- NOAA & NASA space weather APIs
-- Real-time WebSocket streaming
-- Transformer-based forecasting
-- Multi-instrument fusion
-- Mobile dashboard
-- Automated alert notifications
-
----
-
-# 👩‍💻 Team
-
-**Team AntiGravity**
-
-Built for the **Bharatiya Antariksh Hackathon 2026**.
-
----
-
-# 🙏 Inspiration
-
-Inspired by **ISRO's Aditya-L1 Mission** and the vision of advancing AI-assisted space weather forecasting for resilient satellite and communication infrastructure.
-
----
-
-# 📄 License
-
-This project is developed for educational and hackathon purposes.
+Inspired by **ISRO's Aditya-L1 Mission**, SolarSentinel AI demonstrates how Artificial Intelligence, Explainable Machine Learning, and modern cloud technologies can be leveraged to build an intelligent, transparent, and scalable space weather monitoring platform.
