@@ -16,7 +16,6 @@
 ### 🛰 Built for **Bharatiya Antariksh Hackathon 2026**
 
 🌐 **Live Demo:** https://solar-sentinel-ai1.vercel.app
-
 </div>
 
 ---
